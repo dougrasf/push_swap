@@ -5,6 +5,10 @@ NAME = push_swap
 INC = -I ./include
 
 SRC =	./src/push_swap.c \
+		./src/instructions/swap.c \
+		./src/instructions/push.c \
+		./src/instructions/rotate.c \
+		./src/instructions/reverse.c
 
 LIBFTPATH = ./libft
 
