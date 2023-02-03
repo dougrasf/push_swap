@@ -11,7 +11,6 @@ SRC =	./src/instructions/swap.c \
 		./src/mandatory/push_swap.c \
 		./src/mandatory/sort.c \
 		./src/mandatory/sort_utils.c \
-		
 
 LIBFTPATH = ./libft
 
