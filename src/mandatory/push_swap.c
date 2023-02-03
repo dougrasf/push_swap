@@ -6,7 +6,7 @@
 /*   By: dofranci <dofranci@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 22:29:33 by dofranci          #+#    #+#             */
-/*   Updated: 2023/02/02 21:08:48 by dofranci         ###   ########.fr       */
+/*   Updated: 2023/02/02 21:57:18 by dofranci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,33 @@ int	verify2(char *str)
 	while (str[i])
 	{
 		if (str[i] < '0' || str[i] > '9')
-		{
-			ft_putstr_fd("Error\n", STDERR_FILENO);
 			return (1);
-		}
 		i++;
 	}
 	return (0);
+}
+
+long int	ft_atoi2(const char *str)
+{
+	int			negative;
+	long int	result;
+
+	result = 0;
+	negative = 1;
+	while ((*str >= '\t' && *str <= '\r') || *str == ' ')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			negative = -1;
+		str++;
+	}
+	while (*str && ft_isdigit(*str))
+	{
+		result = (result * 10) + (*str - '0');
+		str++;
+	}
+	return (result * negative);
 }
 
 int	verify(int argc, char **argv)
@@ -60,20 +80,19 @@ int	verify(int argc, char **argv)
 	int	j;
 
 	if (argc < 2)
-		return (1);
+		return (2);
 	i = 1;
 	while (argv[i])
 	{
 		if (verify2(argv[i]) != 0)
 			return (1);
+		if (ft_atoi2(argv[i]) > 2147483647 || ft_atoi2(argv[i]) < -2147483648)
+			return (1);
 		j = 1;
 		while (argv[j])
 		{
 			if (ft_atoi(argv[i]) == ft_atoi(argv[j]) && j != i)
-			{
-				ft_putstr_fd("Error\n", STDERR_FILENO);
 				return (1);
-			}
 			j++;
 		}
 		i++;
@@ -84,9 +103,19 @@ int	verify(int argc, char **argv)
 int	main(int argc, char **argv)
 {
 	t_stack	*stack;
+	int		result;
 
-	if (verify(argc, argv) != 0)
-		return (1);
+	result = verify(argc, argv);
+	if (result != 0)
+	{
+		if (result == 2)
+			return (2);
+		else
+		{
+			ft_putstr_fd("Error\n", STDERR_FILENO);
+			return (1);
+		}
+	}
 	stack = malloc(sizeof (t_stack));
 	if (stack == NULL)
 		return (1);
